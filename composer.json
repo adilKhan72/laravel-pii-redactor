@@ -3,11 +3,26 @@
     "description": "Redact PII from text before it reaches LLMs, logs or third parties. Typed placeholders, counts-only reporting.",
     "type": "library",
     "license": "MIT",
-    "keywords": ["laravel", "pii", "redaction", "privacy", "llm", "gdpr"],
-    "authors": [{ "name": "Adil Khan", "homepage": "https://github.com/adilKhan72" }],
+    "keywords": [
+        "laravel",
+        "pii",
+        "redaction",
+        "privacy",
+        "llm",
+        "gdpr"
+    ],
+    "authors": [
+        {
+            "name": "Adil Khan",
+            "homepage": "https://github.com/adilKhan72"
+        }
+    ],
     "require": {
         "php": "^8.3",
-        "illuminate/support": "^12.0 || ^13.0"
+        "illuminate/support": "^12.0 || ^13.0",
+        "illuminate/database": "^12.0 || ^13.0",
+        "illuminate/log": "^12.0 || ^13.0",
+        "monolog/monolog": "^3.0"
     },
     "require-dev": {
         "orchestra/testbench": "^10.0 || ^11.0",
@@ -15,15 +30,23 @@
         "laravel/pint": "^1.18"
     },
     "autoload": {
-        "psr-4": { "AdilKhan\\PiiRedactor\\": "src/" }
+        "psr-4": {
+            "AdilKhan\\PiiRedactor\\": "src/"
+        }
     },
     "autoload-dev": {
-        "psr-4": { "AdilKhan\\PiiRedactor\\Tests\\": "tests/" }
+        "psr-4": {
+            "AdilKhan\\PiiRedactor\\Tests\\": "tests/"
+        }
     },
     "extra": {
         "laravel": {
-            "providers": ["AdilKhan\\PiiRedactor\\PiiRedactorServiceProvider"],
-            "aliases": { "Pii": "AdilKhan\\PiiRedactor\\Facades\\Pii" }
+            "providers": [
+                "AdilKhan\\PiiRedactor\\PiiRedactorServiceProvider"
+            ],
+            "aliases": {
+                "Pii": "AdilKhan\\PiiRedactor\\Facades\\Pii"
+            }
         }
     },
     "scripts": {

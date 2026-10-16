@@ -27,7 +27,7 @@ jobs:
           coverage: none
       - name: Install for Laravel ${{ matrix.laravel }}
         run: |
-          composer require "illuminate/support:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+          composer require "illuminate/support:${{ matrix.laravel }}" "illuminate/database:${{ matrix.laravel }}" "illuminate/log:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
           composer update --prefer-dist --no-interaction --no-progress
       - run: vendor/bin/pint --test
       - run: vendor/bin/phpunit

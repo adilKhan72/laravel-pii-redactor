@@ -31,6 +31,22 @@ php artisan vendor:publish --tag=pii-redactor-config        # optional
 `Pii::redactArray($payload)` redacts every string in a nested array (log context, API payloads) and keeps the keys.
 A misconfigured type or an invalid custom regex throws at boot, not silently at redaction time.
 
+## Logs and stored text
+
+```php
+// config/logging.php: scrub every record on a channel (message, context and extra)
+'stack' => ['driver' => 'stack', 'channels' => ['single'], 'tap' => [\AdilKhan\PiiRedactor\Logging\RedactPii::class]],
+
+// A model column that must never store personal data
+protected function casts(): array
+{
+    return ['notes' => \AdilKhan\PiiRedactor\Casts\Redacted::class];
+}
+```
+
+The cast redacts **on write**, so the original never reaches the database. The processor runs before any handler,
+so files, Slack and log services all receive the scrubbed record.
+
 ## What it detects
 
 | Placeholder | Examples |
@@ -53,7 +69,7 @@ employer and merchant names. That limit is stated rather than papered over.
 | # | Milestone | Status |
 |---|---|---|
 | 1 | Core redactor, service provider, facade, publishable config (disable types, add custom patterns) | ✅ done (#1) |
-| 2 | `Redacted` Eloquent cast, Monolog processor for log scrubbing, v0.1.0 | planned |
+| 2 | `Redacted` Eloquent cast, Monolog processor + channel tap for log scrubbing, v0.1.0 | ✅ done (#2) |
 
 ## Licence
 
