@@ -15,6 +15,22 @@ $result->counts;  // ['SSN' => 1, 'EMAIL' => 1, 'NAME' => 1] (what was removed, 
 Extracted from [loan-underwriting-ai](https://github.com/adilKhan72/loan-underwriting-ai), where redaction runs on every
 document before it's sent to a model (that project's ADR-0004).
 
+## Install
+
+```bash
+composer require adilkhan72/laravel-pii-redactor          # Laravel 12 or 13, PHP 8.3+
+php artisan vendor:publish --tag=pii-redactor-config        # optional
+```
+
+```php
+// config/pii-redactor.php
+'types'  => ['SSN', 'EMAIL', 'PHONE'],                       // only these, in this order
+'custom' => ['EMPLOYEE_ID' => ['/\bEMP-\d{6}\b/']],          // → "[EMPLOYEE_ID]"
+```
+
+`Pii::redactArray($payload)` redacts every string in a nested array (log context, API payloads) and keeps the keys.
+A misconfigured type or an invalid custom regex throws at boot, not silently at redaction time.
+
 ## What it detects
 
 | Placeholder | Examples |
@@ -36,7 +52,7 @@ employer and merchant names. That limit is stated rather than papered over.
 
 | # | Milestone | Status |
 |---|---|---|
-| 1 | Core redactor, service provider, facade, publishable config (disable types, add custom patterns) | in progress |
+| 1 | Core redactor, service provider, facade, publishable config (disable types, add custom patterns) | ✅ done (#1) |
 | 2 | `Redacted` Eloquent cast, Monolog processor for log scrubbing, v0.1.0 | planned |
 
 ## Licence
